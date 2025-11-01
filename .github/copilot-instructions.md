@@ -6,7 +6,7 @@ This is a **NestJS-based food ordering platform** with a **modular authenticatio
 
 ### Key Components
 
-- **API**: NestJS TypeScript application (`/food-ordering-api`)
+- **API**: NestJS TypeScript application (root directory)
 - **Database**: PostgreSQL 16 with Prisma ORM
 - **Cache**: Redis 7 for session management
 - **Documentation**: Swagger/OpenAPI at `/api` endpoint
@@ -40,7 +40,7 @@ npm run start:dev        # NestJS watch mode
 ### Database Operations
 
 ```bash
-# Prisma commands run from /food-ordering-api
+# Prisma commands run from project root
 npx prisma generate      # After schema changes
 npx prisma migrate dev   # Apply migrations
 npx prisma studio        # Database GUI
@@ -51,7 +51,7 @@ npx prisma studio        # Database GUI
 ### Environment Configuration
 
 - **Docker**: `DATABASE_URL=postgresql://nest:nest@db:5432/nest?schema=public` (service networking)
-- **Local**: Uses `.env` file in `/food-ordering-api`
+- **Local**: Uses `.env` file in project root
 - **Build**: Dockerfile sets temporary DATABASE_URL for Prisma generation
 
 ### Authentication Architecture
