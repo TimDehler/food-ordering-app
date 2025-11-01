@@ -1,0 +1,22 @@
+{
+  "name": "food-ordering-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker:start": "docker compose up -d --build",
+    "docker:stop": "docker compose down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimDehler/food-ordering-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TimDehler/food-ordering-app/issues"
+  },
+  "homepage": "https://github.com/TimDehler/food-ordering-app#readme"
+}
