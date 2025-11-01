@@ -36,15 +36,43 @@ model User {
 }
 
 model Restaurant {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
   address     String
   phoneNumber String
-  email       String   @unique
-  ownerId     String   @unique
-  owner       User     @relation(fields: [ownerId], references: [id])
+  email       String    @unique
+  ownerId     String    @unique
+  owner       User      @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Product     Product[]
+
+  @@map("restaurants")
+}
+
+model Product {
+  id            String          @id @default(cuid())
+  name          String
+  description   String?
+  price         Float
+  restaurantId  String
+  restaurant    Restaurant      @relation(fields: [restaurantId], references: [id])
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  ProductExtras ProductExtras[]
+
+  @@map("products")
+}
+
+model ProductExtras {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@map("restaurants")
+  @@map("product_extras")
 }
