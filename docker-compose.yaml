@@ -3,6 +3,8 @@ services:
     build: ./food-ordering-api
     container_name: api
     env_file: ./food-ordering-api/.env
+    environment:
+      - DATABASE_URL=postgresql://nest:nest@db:5432/nest?schema=public
     ports:
       - "3000:3000"
     depends_on:
