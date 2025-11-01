@@ -1,98 +1,305 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🍕 Food Ordering API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A modern, scalable food ordering platform built with **NestJS**, **PostgreSQL**, **Redis**, and **Docker**. This API provides a complete backend solution for food delivery applications with role-based authentication, restaurant management, and order processing.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Features
 
-## Description
+- **🔐 JWT Authentication** - Secure login/register with refresh tokens
+- **👥 Role-Based Access Control** - Customer, Restaurant Owner, Delivery Driver, Admin roles
+- **🏪 Restaurant Management** - CRUD operations for restaurants and menus
+- **📦 Order Processing** - Complete order lifecycle management
+- **💾 Database Integration** - PostgreSQL with Prisma ORM
+- **⚡ Redis Caching** - Session management and performance optimization
+- **📚 API Documentation** - Auto-generated Swagger/OpenAPI docs
+- **🐳 Docker Support** - Full containerization with health checks
+- **🔧 Development Tools** - Hot reload, linting, formatting, testing
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Tech Stack
 
-## Project setup
+- **Framework**: [NestJS](https://nestjs.com/) (Node.js)
+- **Database**: [PostgreSQL 16](https://www.postgresql.org/)
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Cache**: [Redis 7](https://redis.io/)
+- **Authentication**: JWT with Passport
+- **Documentation**: Swagger/OpenAPI
+- **Containerization**: Docker & Docker Compose
+- **Language**: TypeScript
 
-```bash
-$ npm install
+## 📦 Project Structure
+
+```
+src/
+├── auth/                    # Authentication system
+│   ├── endpoints/          # Feature-per-endpoint modules
+│   │   ├── login/         # Login functionality
+│   │   ├── register/      # User registration
+│   │   └── refresh/       # Token refresh
+│   ├── guards/            # Auth guards (JWT, Roles)
+│   ├── decorators/        # Custom decorators
+│   └── jwt.strategy.ts    # JWT strategy
+├── users/                 # User management
+├── restaurant/            # Restaurant CRUD operations
+├── prisma/               # Database service
+└── main.ts               # Application entry point
+
+prisma/
+├── schema.prisma         # Database schema
+└── migrations/           # Database migrations
+
+docker-compose.yaml       # Multi-container setup
+Dockerfile               # API container configuration
 ```
 
-## Compile and run the project
+## 🏃‍♂️ Quick Start
+
+### Prerequisites
+
+- [Node.js 20+](https://nodejs.org/)
+- [Docker](https://www.docker.com/) & Docker Compose
+- [Git](https://git-scm.com/)
+
+### 1. Clone the Repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/TimDehler/food-ordering-app.git
+cd food-ordering-api
 ```
 
-## Run tests
+### 2. Environment Setup
+
+Copy the example environment file and configure:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+Update `.env` with your settings:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+# Database Configuration
+DATABASE_URL="postgresql://nest:nest@localhost:5432/nest?schema=public"
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# JWT Configuration
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_EXPIRES_IN="15m"
+JWT_REFRESH_SECRET="your-super-secret-refresh-key"
+JWT_REFRESH_EXPIRES_IN="7d"
+
+# Redis Configuration
+REDIS_URL="redis://localhost:6379"
+
+# Application Configuration
+NODE_ENV="development"
+PORT=3000
+```
+
+### 3. Start with Docker (Recommended)
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Start all services (API, PostgreSQL, Redis)
+npm run docker:start
+
+# View logs
+npm run docker:logs
+
+# Stop all services
+npm run docker:stop
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 4. Local Development Setup
 
-## Resources
+```bash
+# Install dependencies
+npm install
 
-Check out a few resources that may come in handy when working with NestJS:
+# Generate Prisma client
+npx prisma generate
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Run database migrations
+npx prisma migrate dev
 
-## Support
+# Start development server
+npm run start:dev
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🔗 API Endpoints
 
-## Stay in touch
+### Base URL
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Local**: `http://localhost:3000`
+- **Swagger Docs**: `http://localhost:3000/api`
 
-## License
+### Authentication
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```
+POST /auth/register     # User registration
+POST /auth/login        # User login
+POST /auth/refresh      # Refresh JWT token
+```
+
+### Protected Routes
+
+```
+GET  /                  # Health check
+GET  /restaurants       # List restaurants
+POST /restaurants       # Create restaurant (Admin/Owner)
+PUT  /restaurants/:id   # Update restaurant (Admin/Owner)
+DELETE /restaurants/:id # Delete restaurant (Admin/Owner)
+```
+
+## 🗃️ Database Schema
+
+### User Roles
+
+- `CUSTOMER` - End users placing orders
+- `RESTAURANT_OWNER` - Restaurant managers
+- `DELIVERY_DRIVER` - Delivery personnel
+- `ADMIN` - System administrators
+
+### Core Models
+
+- **User** - Authentication and profile data
+- **Restaurant** - Restaurant information and settings
+- **Product** - Menu items and pricing
+- **ProductExtra** - Add-ons and customizations
+- **Order** - Order management (planned)
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+# Development
+npm run start:dev        # Start with hot reload
+npm run start:debug      # Start with debugging
+npm run build            # Build for production
+npm run start:prod       # Start production build
+
+# Docker Operations
+npm run docker:start     # Start all containers
+npm run docker:stop      # Stop all containers
+npm run docker:logs      # View container logs
+
+# Database Operations
+npx prisma generate      # Generate Prisma client
+npx prisma migrate dev   # Create and apply migration
+npx prisma studio        # Open database GUI
+npx prisma migrate reset # Reset database (dev only)
+
+# Code Quality
+npm run format           # Format code with Prettier
+npm run lint             # Lint and fix issues
+npm run format:lint      # Format + lint combined
+
+# Testing
+npm run test             # Run unit tests
+npm run test:watch       # Run tests in watch mode
+npm run test:e2e         # Run end-to-end tests
+npm run test:cov         # Run tests with coverage
+```
+
+### Code Quality Tools
+
+- **ESLint** - Code linting and style enforcement
+- **Prettier** - Code formatting
+- **Husky** - Git hooks (planned)
+- **Jest** - Unit and integration testing
+
+## 🐳 Docker Configuration
+
+The application uses a multi-container setup with health checks:
+
+```yaml
+services:
+  api: # NestJS API (port 3000)
+  db: # PostgreSQL 16 (port 5432)
+  cache: # Redis 7 (port 6379)
+```
+
+### Health Checks
+
+- **PostgreSQL**: `pg_isready` check every 5s
+- **Redis**: `redis-cli ping` check every 5s
+- **API**: Waits for healthy database and cache
+
+## 📊 API Documentation
+
+Interactive API documentation is available via Swagger UI:
+
+- **URL**: `http://localhost:3000/api`
+- **Features**:
+  - Try-it-out functionality
+  - JWT authentication support
+  - Request/response examples
+  - Schema definitions
+
+## 🔒 Authentication & Authorization
+
+### JWT Token System
+
+- **Access Token**: Short-lived (15m) for API access
+- **Refresh Token**: Long-lived (7d) for token renewal
+- **Bearer Token**: Include in `Authorization` header
+
+### Role-Based Access
+
+```typescript
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN, UserRole.RESTAURANT_OWNER)
+@Post('restaurants')
+createRestaurant() { /* ... */ }
+```
+
+## 🚀 Deployment
+
+### Production Checklist
+
+- [ ] Update environment variables
+- [ ] Set strong JWT secrets
+- [ ] Configure production database
+- [ ] Set up SSL/TLS
+- [ ] Configure reverse proxy (Nginx)
+- [ ] Set up monitoring and logging
+- [ ] Configure backups
+
+### Docker Production
+
+```bash
+# Build for production
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow the existing code style
+- Write tests for new features
+- Update documentation as needed
+- Use conventional commit messages
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🐛 Issues & Support
+
+- **Bug Reports**: [GitHub Issues](https://github.com/TimDehler/food-ordering-app/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/TimDehler/food-ordering-app/discussions)
+- **Documentation**: [Project Wiki](https://github.com/TimDehler/food-ordering-app/wiki)
+
+## 📞 Contact
+
+- **Author**: Tim Dehler
+- **GitHub**: [@TimDehler](https://github.com/TimDehler)
+- **Project**: [food-ordering-app](https://github.com/TimDehler/food-ordering-app)
+
+---
+
+⭐ **Star this repository if you find it helpful!**
